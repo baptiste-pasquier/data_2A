@@ -26,3 +26,5 @@ Déterminer si un tweet est négatif ou positif, et concernant Biden ou Trump.
 ## TO DO
 
 * Avoir des échantillons des 3 bases de données
+
+* 
