@@ -10,11 +10,11 @@ Déterminer si un tweet est négatif ou positif, et concernant Biden ou Trump.
 
 * Liste de mots négatifs et positifs
 
-* Bases de données déjà catégorisées contenant des tweets/textes avec une colonne "négatif ou positif"
+* Base de données déjà catégorisées contenant des tweets/textes avec une colonne "négatif ou positif"
 
 ## Démarche
 
-* Nettoyage de la base webscrappé, attributation à Trump ou Biden.
+* Nettoyage de la base webscrappée, attributation des tweets à Trump ou Biden.
 (Par exemple, suppression des tweets comprenant à la fois Trump et Biden)
 
 * Première idée : Créer un score avec la proportion de mots positifs ou négatifs (grâce à une liste de mots) pour déterminer si un tweet est positif ou négatif
@@ -22,3 +22,7 @@ Déterminer si un tweet est négatif ou positif, et concernant Biden ou Trump.
 * Deuxième idée : Algorithme supervisé (régression logistique par exemple) à partir de la base de données déjà catégorisées
 
 * Data visualisation (aire géographique, évolution au cours du temps)
+
+## TO DO
+
+* Avoir des échantillons des 3 bases de données
