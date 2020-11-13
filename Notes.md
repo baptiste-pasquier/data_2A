@@ -25,6 +25,8 @@ Déterminer si un tweet est négatif ou positif, et concernant Biden ou Trump.
 
 ## TO DO
 
-* Avoir des échantillons des 3 bases de données
+* Preprocessing : utiliser TF IDF au lieu de CountProcessing
 
-* 
+* Algorithme de classification : modèle naïf bayésien (random search puis gridsearch)
+
+* Apprentissage semi-supervisé
