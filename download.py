@@ -1,8 +1,9 @@
-from selenium import webdriver
-import time
 import os
-from bs4 import BeautifulSoup
 import re
+import time
+
+from bs4 import BeautifulSoup
+from selenium import webdriver
 
 
 def download(*args, live=True, since=False, until=False, lang="en", pause_time=1.5, nb_scroll=100):
@@ -37,26 +38,31 @@ def download(*args, live=True, since=False, until=False, lang="en", pause_time=1
 
         driver.get(url)
 
-        last_height = driver.execute_script("return document.body.scrollHeight")
+        last_height = driver.execute_script(
+            "return document.body.scrollHeight")
 
         max_translateY = -1
         string = ""
 
         for i in range(nb_scroll):
             print(i)
-            driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+            driver.execute_script(
+                "window.scrollTo(0, document.body.scrollHeight);")
             time.sleep(pause_time)
 
             page = BeautifulSoup(driver.page_source, 'lxml')
-            centre = page.find("div", {"class": "css-1dbjc4n", "aria-label": "Fil d'actualités : Rechercher dans le fil"}).contents[0]
+            centre = page.find("div", {
+                               "class": "css-1dbjc4n", "aria-label": "Fil d'actualités : Rechercher dans le fil"}).contents[0]
             liste = centre.findAll("div", recursive=False)
             for elem in liste:
-                translateY = int(re.findall("translateY\((.*)px\)", elem.attrs.get("style"))[0])
+                translateY = int(re.findall(
+                    "translateY\((.*)px\)", elem.attrs.get("style"))[0])
                 if translateY > max_translateY:
                     string += str(elem)
                     max_translateY = translateY
 
-            new_height = driver.execute_script("return document.body.scrollHeight")
+            new_height = driver.execute_script(
+                "return document.body.scrollHeight")
             if new_height == last_height:
                 break
             last_height = new_height
@@ -67,4 +73,5 @@ def download(*args, live=True, since=False, until=False, lang="en", pause_time=1
     driver.quit()
 
 
-download("trump", lang='en', since='2012-12-05', until='2012-12-06', nb_scroll=1000, pause_time=1)
+download("trump", lang='en', since='2012-12-05',
+         until='2012-12-06', nb_scroll=1000, pause_time=1)
