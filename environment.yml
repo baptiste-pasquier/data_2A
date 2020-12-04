@@ -11,8 +11,10 @@ dependencies:
   - seaborn
   - scikit-learn
   - bs4
+  - lxml
   - ipykernel
   - nltk
   - jupyterlab
   - selenium
   - flake8
+  - wordcloud
