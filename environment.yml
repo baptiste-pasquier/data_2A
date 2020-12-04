@@ -14,3 +14,5 @@ dependencies:
   - ipykernel
   - nltk
   - jupyterlab
+  - selenium
+  - flake8

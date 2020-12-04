@@ -1,3 +1,8 @@
+"""
+Webscraping de Twitter
+"""
+
+
 import os
 import re
 import time
@@ -7,14 +12,14 @@ from selenium import webdriver
 
 
 def download(*args, live=True, since=False, until=False, lang="en", pause_time=1.5, nb_scroll=100):
-    """[summary]
+    """Téléchargement du code HTML de tweets issus d'une recherche
 
     Args:
         live (bool, optional): aller dans l'onglet "Récent" de Twitter. Defaults to False.
         since (bool, optional): date minimale de recherche au format YYYY-MM-DD. Defaults to False.
         until (bool, optional): date maximale de recherche au format YYYY-MM-DD. Defaults to False.
         lang (str, optional): langue des tweets. Defaults to "en".
-        pause_time (float, optional): temps entre chaque scroll (important). Defaults to 1.5.
+        pause_time (float, optional): temps entre chaque scroll (à adapter en fonction de la connexion). Defaults to 1.5.
         nb_scroll (int, optional): nombre de scrolls max. Defaults to 100.
 
     """
