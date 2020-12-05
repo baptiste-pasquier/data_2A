@@ -1,5 +1,5 @@
 """
-Webscraping de Twitter
+Webscraping de Twitter / multiprocessing
 """
 
 
@@ -7,7 +7,9 @@ import datetime
 import os
 import re
 import shutil
+import threading
 import time
+from multiprocessing.pool import ThreadPool
 
 import pandas as pd
 from bs4 import BeautifulSoup
@@ -98,23 +100,39 @@ def download(*args, live=False, since=False, until=False, date=False, lang="en",
             f.write(string)
 
 
-PATH = os.path.join('data', 'web', 'html_single_05s')
+threadLocal = threading.local()
 
-if not os.path.exists(PATH):
+
+def get_driver():
+    driver = getattr(threadLocal, 'driver', None)
+    if driver is None:
+        # chromeOptions = webdriver.ChromeOptions()
+        # chromeOptions.add_argument("--headless")
+        # driver = webdriver.Chrome(chrome_options=chromeOptions)
+        driver = webdriver.Firefox()
+        setattr(threadLocal, 'driver', driver)
+    return driver
+
+
+PATH = os.path.join('data', 'web', 'html')
+
+
+def f(date):
+    return download("trump", "biden", lang='en', live=True, date=date, nb_scroll=10, pause_time=1.75, path=PATH, driver=get_driver())
+
+
+if __name__ == '__main__':
+
+    if not os.path.exists(PATH):
+        os.makedirs(PATH)
+
+    shutil.rmtree(PATH)     # On supprime les fichiers existants
     os.makedirs(PATH)
 
-shutil.rmtree(PATH)     # On supprime les fichiers existants
-os.makedirs(PATH)
+    LIST_DATES = pd.date_range(
+        start='2019-01-01', end='2019-12-31', periods=24).to_pydatetime().tolist()
+    LIST_DATES = [date.strftime('%Y-%m-%d') for date in LIST_DATES]
 
-
-LIST_DATES = pd.date_range(
-    start='2019-01-01', end='2019-12-31', periods=8).to_pydatetime().tolist()
-LIST_DATES = [date.strftime('%Y-%m-%d') for date in LIST_DATES]
-
-a = time.time()
-driver = webdriver.Firefox()
-for date in LIST_DATES:
-    download("trump", "biden", lang='en', live=True,
-             date=date, nb_scroll=10, pause_time=1, path=PATH, driver=driver)
-driver.quit()
-print(time.time() - a)
+    a = time.time()
+    ThreadPool(2).map(f, LIST_DATES)
+    print(time.time() - a)
