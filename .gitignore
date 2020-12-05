@@ -5,6 +5,7 @@ __pycache__
 *.code-workspace
 .history
 .vscode
-data/
+data/hashtag_donaldtrump.csv
+data/hashtag_joebiden.csv
 temp/
 debug.log
