@@ -62,7 +62,6 @@ def download(*args, live=False, since=False, until=False, date=False, lang="en",
         compteur = 0
 
         for i in range(nb_scroll):
-            # print(i)
             driver.execute_script(
                 "window.scrollTo(0, document.body.scrollHeight);")
             time.sleep(pause_time)
@@ -71,6 +70,7 @@ def download(*args, live=False, since=False, until=False, date=False, lang="en",
             centre = page.find("div", {
                                "class": "css-1dbjc4n", "aria-label": "Fil d'actualités : Rechercher dans le fil"}).contents[0]
             liste = centre.findAll("div", recursive=False)
+
             for elem in liste:
                 translateY = int(re.findall(
                     "translateY\((.*)px\)", elem.attrs.get("style"))[0])
@@ -78,7 +78,7 @@ def download(*args, live=False, since=False, until=False, date=False, lang="en",
                     max_translateY = translateY
 
                     if not live:
-                        # Pour enlever les profils qui apparaissent en haut (pas tout le temps...)
+                        # Pour enlever les profils qui apparaissent en haut de la page (pas tout le temps...)
                         if compteur >= 6:
                             string += str(elem) + '\n\n\n\n'
                         compteur += 1
@@ -100,10 +100,17 @@ def download(*args, live=False, since=False, until=False, date=False, lang="en",
             f.write(string)
 
 
-threadLocal = threading.local()
+# Pour économiser le temps d'ouverture du navigateur, on utilise un unique webdriver pour chaque thread. On va donc associer un webdriver à chaque thread.
+
+threadLocal = threading.local()     # Permet d'avoir un identifiant pour chaque thread.
 
 
 def get_driver():
+    """Renvoie l'unique webdriver de chaque thread
+
+    Returns:
+        selenium.webdriver
+    """
     driver = getattr(threadLocal, 'driver', None)
     if driver is None:
         # chromeOptions = webdriver.ChromeOptions()
@@ -118,6 +125,9 @@ PATH = os.path.join('data', 'web', 'html')
 
 
 def f(date):
+    """
+    Fonction d'une seule variable pour le multithreading
+    """
     return download("trump", "biden", lang='en', live=True, date=date, nb_scroll=10, pause_time=1.75, path=PATH, driver=get_driver())
 
 
@@ -133,6 +143,7 @@ if __name__ == '__main__':
         start='2019-01-01', end='2019-12-31', periods=24).to_pydatetime().tolist()
     LIST_DATES = [date.strftime('%Y-%m-%d') for date in LIST_DATES]
 
+    NB_THREADS = 2
     a = time.time()
-    ThreadPool(2).map(f, LIST_DATES)
+    ThreadPool(NB_THREADS).map(f, LIST_DATES)
     print(time.time() - a)

@@ -60,7 +60,6 @@ def download(*args, live=False, since=False, until=False, date=False, lang="en",
         compteur = 0
 
         for i in range(nb_scroll):
-            # print(i)
             driver.execute_script(
                 "window.scrollTo(0, document.body.scrollHeight);")
             time.sleep(pause_time)
@@ -69,6 +68,7 @@ def download(*args, live=False, since=False, until=False, date=False, lang="en",
             centre = page.find("div", {
                                "class": "css-1dbjc4n", "aria-label": "Fil d'actualités : Rechercher dans le fil"}).contents[0]
             liste = centre.findAll("div", recursive=False)
+
             for elem in liste:
                 translateY = int(re.findall(
                     "translateY\((.*)px\)", elem.attrs.get("style"))[0])
@@ -76,7 +76,7 @@ def download(*args, live=False, since=False, until=False, date=False, lang="en",
                     max_translateY = translateY
 
                     if not live:
-                        # Pour enlever les profils qui apparaissent en haut (pas tout le temps...)
+                        # Pour enlever les profils qui apparaissent en haut de la page (pas tout le temps...)
                         if compteur >= 6:
                             string += str(elem) + '\n\n\n\n'
                         compteur += 1
