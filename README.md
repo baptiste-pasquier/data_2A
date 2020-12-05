@@ -17,6 +17,3 @@ Le paramètre `pause_time` détermine le temps avant d'effectuer un scroll. Il d
 
 Le script [download_multi.py](download_multi.py) effectue le webscraping en multithreading. 
 
-
-## Téléchargement des données
-Le dossier `data` contenant les données est téléchargeable à l'adresse suivante : https://genes-my.sharepoint.com/:f:/g/personal/bpasquier_ensae_fr/Eo1qlBv9IylGpSgVC4avtTkBycCMeotZkb6pKTU9HxhQ1Q?e=agWDPR

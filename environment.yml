@@ -19,3 +19,6 @@ dependencies:
   - selenium
   - flake8
   - wordcloud
+  - pyahocorasick
+  - pip:
+    - contractions
