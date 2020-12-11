@@ -86,7 +86,6 @@ def download(*args, live=False, since=False, until=False, date=False, lang="en",
             new_height = driver.execute_script(
                 "return document.body.scrollHeight")
             if new_height == last_height:
-                print("error")
                 break
             last_height = new_height
 
@@ -94,11 +93,11 @@ def download(*args, live=False, since=False, until=False, date=False, lang="en",
             file = os.path.join(path, f"{search}-{date}.html")
         else:
             file = os.path.join(path, f"{search}.html")
-        with open(file, 'w') as f:
+        with open(file, 'w', encoding='utf-8') as f:
             f.write(string)
 
 
-PATH = os.path.join('data', 'web', 'html_single_05s')
+PATH = os.path.join('data', 'web', 'html')
 
 if not os.path.exists(PATH):
     os.makedirs(PATH)
@@ -108,13 +107,15 @@ os.makedirs(PATH)
 
 
 LIST_DATES = pd.date_range(
-    start='2019-01-01', end='2019-12-31', periods=8).to_pydatetime().tolist()
-LIST_DATES = [date.strftime('%Y-%m-%d') for date in LIST_DATES]
+    start='2020-01-01', end='2020-11-02', periods=84).to_pydatetime().tolist()
+LIST_DATES = [date.strftime('%Y-%m-%d') for date in LIST_DATES][92:]
 
 a = time.time()
-driver = webdriver.Firefox()
-for date in LIST_DATES:
-    download("trump", "biden", lang='en', live=True,
-             date=date, nb_scroll=10, pause_time=1, path=PATH, driver=driver)
-driver.quit()
+N = 12
+for i in range(len(LIST_DATES) // N + 1):
+    driver = webdriver.Firefox()
+    for date in LIST_DATES[N * i: N * (i + 1)]:
+        download("trump", "biden", lang='en', live=False,
+                 date=date, nb_scroll=20, pause_time=1.25, path=PATH, driver=driver)
+    driver.quit()
 print(time.time() - a)

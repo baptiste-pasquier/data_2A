@@ -61,12 +61,12 @@ def download(*args, live=False, since=False, until=False, date=False, lang="en",
         string = ""
         compteur = 0
 
-        for i in range(nb_scroll):
+        for _ in range(nb_scroll):
             driver.execute_script(
                 "window.scrollTo(0, document.body.scrollHeight);")
             time.sleep(pause_time)
 
-            page = BeautifulSoup(driver.page_source, 'lxml')
+            page = BeautifulSoup((driver.page_source).encode('utf-8'), 'lxml')
             centre = page.find("div", {
                                "class": "css-1dbjc4n", "aria-label": "Fil d'actualités : Rechercher dans le fil"}).contents[0]
             liste = centre.findAll("div", recursive=False)
@@ -88,7 +88,6 @@ def download(*args, live=False, since=False, until=False, date=False, lang="en",
             new_height = driver.execute_script(
                 "return document.body.scrollHeight")
             if new_height == last_height:
-                print("error")
                 break
             last_height = new_height
 
@@ -96,7 +95,7 @@ def download(*args, live=False, since=False, until=False, date=False, lang="en",
             file = os.path.join(path, f"{search}-{date}.html")
         else:
             file = os.path.join(path, f"{search}.html")
-        with open(file, 'w') as f:
+        with open(file, 'w', encoding='utf-8') as f:
             f.write(string)
 
 
@@ -112,12 +111,18 @@ def get_driver():
         selenium.webdriver
     """
     driver = getattr(threadLocal, 'driver', None)
+    nb = getattr(threadLocal, 'nb', None)
     if driver is None:
-        # chromeOptions = webdriver.ChromeOptions()
-        # chromeOptions.add_argument("--headless")
-        # driver = webdriver.Chrome(chrome_options=chromeOptions)
         driver = webdriver.Firefox()
         setattr(threadLocal, 'driver', driver)
+        setattr(threadLocal, 'nb', 1)
+    elif nb == 10:
+        driver.close()
+        driver = webdriver.Firefox()
+        setattr(threadLocal, 'driver', driver)
+        setattr(threadLocal, 'nb', 1)
+    else:
+        setattr(threadLocal, 'nb', nb + 1)
     return driver
 
 
@@ -128,7 +133,8 @@ def f(date):
     """
     Fonction d'une seule variable pour le multithreading
     """
-    return download("trump", "biden", lang='en', live=True, date=date, nb_scroll=10, pause_time=1.75, path=PATH, driver=get_driver())
+    print(date)
+    return download("trump", "biden", lang='en', live=False, date=date, nb_scroll=20, pause_time=1.75, path=PATH, driver=get_driver())
 
 
 if __name__ == '__main__':
@@ -140,7 +146,7 @@ if __name__ == '__main__':
     os.makedirs(PATH)
 
     LIST_DATES = pd.date_range(
-        start='2019-01-01', end='2019-12-31', periods=24).to_pydatetime().tolist()
+        start='2019-01-01', end='2019-12-31', periods=100).to_pydatetime().tolist()
     LIST_DATES = [date.strftime('%Y-%m-%d') for date in LIST_DATES]
 
     NB_THREADS = 2
