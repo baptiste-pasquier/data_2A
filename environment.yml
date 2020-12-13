@@ -20,5 +20,8 @@ dependencies:
   - flake8
   - wordcloud
   - pyahocorasick
+  - openpyxl
+  - xlrd
   - pip:
     - contractions
+    - google_trans_new
