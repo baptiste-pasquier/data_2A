@@ -26,5 +26,6 @@ Nous réalisons un apprentissage de type supervisé en utilisant la base  [Senti
 Modèles utilisés : 
 
 * Logistic Regression : [model-LR.ipynb](model-LR.ipynb)
-* Gaussian/Multinomial naïve Bayes : [model-NB.ipynb](model-NB.ipynb)
+* Gaussian/Multinomial Naive Bayes : [model-NB.ipynb](model-NB.ipynb)
+* Multinomial Naive Bayes Semi-Supervised : [model-semi.ipynb](model-semi.ipynb)
 * Neural Networks : [model-NN.ipynb](model-NN.ipynb)
