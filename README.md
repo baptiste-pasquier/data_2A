@@ -25,16 +25,27 @@ Le notebook [parsing.ipynb](parsing.ipynb) créée un dataframe avec les tweets 
 
 Nous réalisons un apprentissage de type supervisé en utilisant la base  [Sentiment140](http://help.sentiment140.com/) qui contient 1.6 millions de Tweets déjà catégorisés (`Positive` ou `Negative`).
 
+### 1. Preprocessing
+
 Le notebook [preprocessing.ipynb](preprocessing.ipynb) effectue le preprocessing sur la base Sentiment140 et les tweets webscrapés.
 
-Le notebook [description.ipynb](description.ipynb) contient des statistiques descriptives sur la base Sentiment140 et les tweets és après preprocessing.
+Méthodes utilisées : 
+* Count Vectorizer
+* TF-IDF
+* N-grams
 
-Modèles utilisés : 
+### 2. Statistiques descriptives
+
+Le notebook [description.ipynb](description.ipynb) contient des statistiques descriptives sur la base Sentiment140 et les tweets webscrapés après preprocessing.
+
+### 3. Modélisation
 
 * Logistic Regression : [model-LR.ipynb](model-LR.ipynb)
 * Gaussian/Multinomial Naive Bayes : [model-NB.ipynb](model-NB.ipynb)
 * Multinomial Naive Bayes Semi-Supervised : [model-semi.ipynb](model-semi.ipynb)
 * Neural Networks : [model-NN.ipynb](model-NN.ipynb)
+
+### 4. Résultats
 
 Le notebook [model-semi.ipynb](model-semi.ipynb) contient par ailleurs l'application finale du meilleur modèle sur l'ensemble des tweets webscrapés.
 
@@ -48,6 +59,7 @@ conda env create
 ```
 
 * Lancement de JupyterLab ou Jupyter Notebook
+
 Exécuter à l'intérieur du répertoire : 
 ```bash
 conda activate data-2A
